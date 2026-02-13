@@ -1,0 +1,52 @@
+# OpenClaw config example for SMS-Gate integration
+# Add this to your OpenClaw config.yaml
+
+notifications:
+  sms_gate:
+    command: "send_sms.bat {phone} \"{message}\""
+    description: "Send alerts via SMS-Gate"
+
+# Or with PowerShell:
+#   sms_gate:
+#     command: "powershell -ExecutionPolicy Bypass -File C:\\Tools\\Send-Sms.ps1 -Phone {phone} -Message \"{message}\""
+
+# Or with bash (Linux/macOS):
+#   sms_gate:
+#     command: "send_sms.sh {phone} \"{message}\""
+
+rules:
+  - name: "New IOC detected"
+    condition: "ioc.type == 'malicious_url'"
+    actions:
+      - notify:
+          method: sms_gate
+          phone: "+1123446789"
+          message: "⚠️ New malicious URL observed: {ioc.value}"
+
+  - name: "Alert on inbound SMS from unknown number"
+    condition: >
+      event.source == "sms-gate" &&
+      event.type == "sms:received" &&
+      event.details.sender not in known_contacts
+    actions:
+      - notify:
+          method: slack
+          channel: "#security-alerts"
+          message: |
+            📲 New SMS from {{event.details.sender}}:
+            "{{event.details.text}}"
+
+  - name: "Alert on new SMS evidence"
+    condition: >
+      event.source == "sms-gate" &&
+      event.type == "sms:received" &&
+      event.details.evidence_id is not none
+    actions:
+      - notify:
+          method: slack
+          channel: "#incident-evidence"
+          message: |
+            📁 New SMS evidence recorded:
+            • Sender: {{event.details.sender}}
+            • Text: "{{event.details.text}}"
+            • Evidence ID: {{event.details.evidence_id}}

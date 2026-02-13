@@ -941,6 +941,17 @@ You can list all active MCP connections and their transport types:
 CAI>/mcp list
 ```
 
+### SMS-Gate (OpenClaw) Integration
+
+CAI can send and receive SMS via [SMS-Gate](https://sms-gate.app) (Graphene Android). Use the `send_sms` tool in agents or shell scripts for outbound alerts; deploy a webhook receiver for inbound events. Optional blockchain timestamping for evidence preservation.
+
+```bash
+export SMSGATE_AUTH=$(echo -n 'USER:PASS' | base64)
+python -m examples.openclaw_sms_gate.main
+```
+
+See [examples/openclaw_sms_gate/README.md](examples/openclaw_sms_gate/README.md) and [docs/integrations/sms_gate.md](docs/integrations/sms_gate.md) for full setup.
+
 https://github.com/user-attachments/assets/386a1fd3-3469-4f84-9396-2a5236febe1f
 
 

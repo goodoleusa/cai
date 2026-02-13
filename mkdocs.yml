@@ -104,6 +104,7 @@ nav:
   # ========================================
   - Guides:
       - Running Agents: running_agents.md
+      - SMS-Gate (OpenClaw) Integration: integrations/sms_gate.md
       - Continue Mode: continue_mode.md
       - Session Resume: session_resume.md
       - Working with Results: results.md

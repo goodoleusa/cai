@@ -1,0 +1,5 @@
+# Additional dependencies for SMS-Gate integration
+# Core: flask, requests are already in cai-framework
+
+# For blockchain webhook (optional):
+psycopg2-binary>=2.9.0
